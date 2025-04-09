@@ -1,0 +1,15 @@
+# EditorConfig is awesome: https://editorconfig.org
+
+root = true
+
+# Affects every file formatted in text editors that have an EditorConfig plugin installed
+[*]
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+# Don't trim trailing whitespace in Markdown (they are used to force line breaks)
+trim_trailing_whitespace = false
