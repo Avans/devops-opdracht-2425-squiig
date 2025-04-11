@@ -24,6 +24,8 @@
   },
   "devDependencies": {
     "debug": "^4.3.5",
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0",
     "supports-color": "^9.4.0"
   }
 }
