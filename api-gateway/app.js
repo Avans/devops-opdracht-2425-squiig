@@ -3,7 +3,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swaggerConfig");
 const createError = require("http-errors");
 
-const db = require("./services/database.js");
+require("./services/database.js").connectAndSeed();
 
 const passport = require("./auth/passport.js");
 const checkRole = require("./auth/authorization.js");
