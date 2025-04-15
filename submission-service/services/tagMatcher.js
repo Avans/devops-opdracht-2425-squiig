@@ -4,6 +4,7 @@ async function compareImage(target, submissionImage) {
   try {
     if (target.imageData === submissionImage) {
       throw {
+        name: "BadRequest",
         message: `Target image cannot be exactly the same as entry image.`,
         code: 400,
       };
@@ -45,11 +46,19 @@ async function compareImage(target, submissionImage) {
       return score;
     } catch (error) {
       console.log("error with imagga call: " + error);
-      throw { message: "GetTargetWithTags went wrong!", code: 424 };
+      throw {
+        name: "FailedDependency",
+        message: "GetTargetWithTags went wrong!",
+        code: 424,
+      };
     }
   } catch (error) {
     console.log("error in tagMatcher: " + error);
-    throw { message: error.message, code: error.code || 500 };
+    throw {
+      name: error.name,
+      message: error.message,
+      code: error.code ?? 500,
+    };
   }
 }
 
