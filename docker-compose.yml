@@ -32,6 +32,9 @@ services:
     environment:
       MONGO_URL: mongodb://gatewaydb:27017/users
       PORT: 3000
+    depends_on:
+      gatewaydb:
+        condition: service_started
 
   gatewaydb:
     container_name: gatewaydb
