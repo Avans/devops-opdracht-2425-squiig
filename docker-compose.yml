@@ -1,0 +1,132 @@
+version: "3.9"
+services:
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    restart: on-failure:3
+    expose:
+      - 5672
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: secret
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit log_levels [{connection,error}]"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  apigateway:
+    container_name: apigateway
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      MONGO_URL: mongodb://gatewaydb:27017/users
+      PORT: 3000
+    depends_on:
+      gatewaydb:
+        condition: service_started
+
+  gatewaydb:
+    container_name: gatewaydb
+    image: mongo:latest
+    restart: on-failure:3
+    expose:
+      - 27017
+    volumes:
+      - gatewaydb:/data/db
+
+  readservice:
+    container_name: readservice
+    build:
+      context: read-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3000
+      MONGO_URL: mongodb://readservicedb:27017/read
+      RABBITMQ_URL: amqp://user:secret@rabbitmq
+      RABBITMQ_PORT: 5672
+    depends_on:
+      readservicedb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+  readservicedb:
+    container_name: readservicedb
+    image: mongo:latest
+    restart: on-failure:3
+    expose:
+      - 27017
+    volumes:
+      - readservicedb:/data/db
+
+  targetservice:
+    container_name: targetservice
+    build:
+      context: target-service
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URL: mongodb://targetdb:27017/targets
+      RABBITMQ_URL: amqp://user:secret@rabbitmq
+      RABBITMQ_PORT: 5672
+      PORT: 3000
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      targetdb:
+        condition: service_started
+
+  targetdb:
+    container_name: targetdb
+    image: mongo:latest
+    restart: on-failure:3
+    expose:
+      - 27017
+    volumes:
+      - targetdb:/data/db
+
+  submissionservice:
+    container_name: submissionservice
+    build:
+      context: submission-service
+      dockerfile: Dockerfile
+    environment:
+      RABBITMQ_URL: amqp://user:secret@rabbitmq
+      RABBITMQ_PORT: 5672
+      PORT: 3000
+      MONGO_URL: mongodb://submissiondb:27017/submissions
+      IMAGGA_KEY: acc_58905f59a7ab950
+      IMAGGA_SECRET: f87b5df804c244181167631ac6a3ec5a
+      IMAGGA_ENDPOINT: https://api.imagga.com
+      IMAGGA_AUTH: YWNjXzU4OTA1ZjU5YTdhYjk1MDpmODdiNWRmODA0YzI0NDE4MTE2NzYzMWFjNmEzZWM1YQ==
+    depends_on:
+      submissiondb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+  submissiondb:
+    container_name: submissiondb
+    image: mongo:latest
+    restart: on-failure:3
+    expose:
+      - 27017
+    volumes:
+      - submissiondb:/data/db
+
+volumes:
+  submissiondb:
+  targetdb:
+  readservicedb:
+  gatewaydb:
+  rabbitmq:

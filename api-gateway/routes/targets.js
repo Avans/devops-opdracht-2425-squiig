@@ -1,0 +1,193 @@
+const express = require('express');
+const multer = require('multer');
+const router = express.Router();
+const upload = multer();
+const User = require('../models/user');
+const checkRole = require('../auth/authorization');
+const mongoose = require('mongoose');
+
+/**
+ * @openapi
+ * /:
+ *   post:
+ *     summary: Create a new target.
+ *     produces: application/json
+ *     responses:
+ *       200:
+ *         description: A message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: An error occurred
+ */
+router.post('/', upload.single('image'), async function (req, res) {
+
+
+  if (!req.body)
+    return res.status(400).send('Cannot POST empty body');
+
+  if (!req.file)
+    return res.status(400).send('No File found');
+
+  let dataToSend = {
+    imageData: req.file.buffer.toString('base64'),
+    additionalString: req.body,
+    user: req.user._id
+  };
+
+  const jsonData = JSON.stringify(dataToSend);
+  await fetch("http://targetservice:" + process.env.PORT + "/upload", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: jsonData
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.text();
+      return Promise.reject({ status: response.status, data: errorData });
+    }
+
+    const data = await response.text();
+    return { data, status: 200 }; 
+  })
+  .then(response => {
+    res.status(response.status).send(response.data);
+  })
+  .catch(err => {
+    if (err.status === 400) {
+      res.status(400).send(err.data);
+    } else {
+      console.error(err);
+      res.status(500).send("Internal server error.");
+    }
+  });
+});
+
+/**
+ * @openapi
+ * /{id}:
+ *   delete:
+ *     summary: Delete target with given ID.
+ *     produces: application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the target to delete.
+ *         schema:
+ *           type: string
+ *           example: "5f8d0d55b54764421b7156c2"
+ *     responses:
+ *       200:
+ *         description: A message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *       404:
+ *         description: resource not found
+ *       500:
+ *         description: An error occurred
+ */
+router.delete('/:id', async function (req, res) {
+
+  await fetch("http://targetservice:" + process.env.PORT + "/" + req.params.id + "/" + req.user._id, {
+    method: 'DELETE',
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.text();
+      return Promise.reject({ status: response.status, data: errorData });
+    }
+
+    const data = await response.text();
+    return { data, status: 200 }; 
+  })
+  .then(response => {
+    res.status(response.status).send(response.data);
+  })
+  .catch(err => {
+    if (err.status === 404) {
+      res.status(404).send(err.data);
+    } else {
+      console.error(err);
+      res.status(500).send("Internal server error.");
+    }
+  });
+});
+
+/**
+ * @openapi
+ * /user/{user}:
+ *   delete:
+ *     summary: (admin) Delete all targets for a given user.
+ *     produces: application/json
+ *     parameters:
+ *       - in: path
+ *         name: user
+ *         required: true
+ *         description: The ID or email of the user to delete the submissions for.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: An error occurred
+ */
+router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
+  let userId;
+  try {
+    if (mongoose.Types.ObjectId.isValid(req.params.user)) {
+      userId = req.params.user;
+    } else {
+      await User.findOne({ email: req.params.user }).then((user) => {
+        userId = user._id;
+      });
+    }
+  } catch (err) {
+    res.status(404).send("User not found. Please supply a valid user id or email.");
+    return;
+  }
+
+  if (!userId) {
+    res.status(404).send("User not found.");
+    return;
+  }
+
+  const url = `http://targetservice:${process.env.PORT}/user/${userId}`;
+  await fetch(url, {
+    method: 'DELETE'
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.text();
+      return Promise.reject({ status: response.status, data: errorData });
+    }
+
+    const data = await response.text();
+    return { data, status: 200 }; 
+  })
+  .then(response => {
+    res.status(response.status).send(response.data);
+  })
+  .catch(err => {
+    if (err.status === 404) {
+      res.status(404).send(err.data);
+    } else {
+      console.error(err);
+      res.status(500).send("Internal server error.");
+    }
+  });
+});
+
+module.exports = router;
