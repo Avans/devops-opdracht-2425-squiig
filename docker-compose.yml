@@ -64,7 +64,7 @@ services:
   readservicedb:
     container_name: readservicedb
     image: mongo:latest
-    restart: always
+    restart: on-failure:3
     expose:
       - 27017
     volumes:
