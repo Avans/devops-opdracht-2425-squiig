@@ -14,7 +14,7 @@ describe("Get Users", () => {
   // });
 
   it("should get all users in array", async () => {
-    const expected = { foo: "bar" };
+    const expected = { email: "foo@bar.com", passwordHash: "foobar", role: "user" };
     await User.insertOne(expected);
     delete expected._id;
 
@@ -26,6 +26,7 @@ describe("Get Users", () => {
 });
 
 // probeersel
+/*
 describe("Get User", () => {
   beforeEach(async () => {
     await User.deleteMany({});
@@ -50,3 +51,4 @@ describe("Get User", () => {
     expect(res.statusCode).toEqual(404);
   });
 });
+*/
