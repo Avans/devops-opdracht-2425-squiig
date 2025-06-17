@@ -1,4 +1,4 @@
-FROM node:20.12.2-slim
+FROM node:24.2.0-alpine3.22
 
 WORKDIR /targetservice
 COPY . .
