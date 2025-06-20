@@ -1,9 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const mongoose = require('mongoose');
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+import User from '../models/user.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
 router.post('/register', async function (req, res) {
@@ -62,4 +61,4 @@ function generateToken(user) {
   return jwt.sign(payload, privateKey, { expiresIn: '1h' })
 }
 
-module.exports = router
+export default router;

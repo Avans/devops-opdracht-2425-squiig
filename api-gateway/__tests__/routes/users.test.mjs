@@ -1,17 +1,18 @@
 const { ExpectationFailed } = require("http-errors");
-const request = require("supertest");
-const app = require("../../app");
-const db = require("../../services/database");
-const User = require("../../models/user");
+import request from "supertest";
+import app from "../../app.js";
+import db from "../../services/database.js";
+import User from "../../models/user.js";
 
 describe("Get Users", () => {
   beforeEach(async () => {
+    await db.connect();
     await User.deleteMany({});
   });
 
-  // afterAll(async () => {
-  //   db.connection.close();
-  // });
+  afterAll(async () => {
+    await db.disconnect();
+  });
 
   it("should get all users in array", async () => {
     const expected = { email: "foo@bar.com", passwordHash: "foobar", role: "user" };

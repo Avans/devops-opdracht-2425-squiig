@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const checkRole = require('../auth/authorization');
-const User = require('../models/user');
+import checkRole from '../auth/authorization.js';
+import User from '../models/user.js';
 
 /**
  * @openapi
@@ -485,4 +485,4 @@ router.get('/target/:id/submission', async function (req, res) {
 
 
 
-module.exports = router;
+export default router;

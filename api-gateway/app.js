@@ -1,17 +1,18 @@
-const express = require("express");
-const swaggerUi = require("swagger-ui-express");
-const swaggerSpec = require("./swaggerConfig");
-const createError = require("http-errors");
+import express from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swaggerConfig.js";
+import createError from "http-errors";
 
-require("./services/database.js").connectAndSeed();
+import db from "./services/database.js";
+await db.connectAndSeed();
 
-const passport = require("./auth/passport.js");
-const checkRole = require("./auth/authorization.js");
+import passport from "./auth/passport.js";
+import checkRole from "./auth/authorization.js";
 
-const submissionsRouter = require("./routes/submissions");
-const targetsRouter = require("./routes/targets");
-const authcRouter = require("./auth/authenticationRouter.js");
-const readRouter = require("./routes/read");
+import submissionsRouter from "./routes/submissions.js";
+import targetsRouter from "./routes/targets.js";
+import authcRouter from "./auth/authenticationRouter.js";
+import readRouter from "./routes/read.js";
 
 const app = express();
 
@@ -59,4 +60,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-module.exports = app;
+export default app;

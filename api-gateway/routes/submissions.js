@@ -1,10 +1,10 @@
-const express = require("express");
-const multer = require("multer");
+import express from "express";
 const router = express.Router();
+import multer from "multer";
 const upload = multer();
-const checkRole = require("../auth/authorization");
-const mongoose = require("mongoose");
-const User = require("../models/user");
+import checkRole from "../auth/authorization.js";
+import mongoose from "mongoose";
+import User from "../models/user.js";
 
 /**
  * @openapi
@@ -250,4 +250,4 @@ router.delete("/user/:user", checkRole(["admin"]), async function (req, res) {
     });
 });
 
-module.exports = router;
+export default router;
