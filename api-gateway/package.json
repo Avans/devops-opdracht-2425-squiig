@@ -31,6 +31,9 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "transform": {},
+    "testMatch": ["**/__tests__/**/*.test.js"],
+    "extensionsToTreatAsEsm": [".js"],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
