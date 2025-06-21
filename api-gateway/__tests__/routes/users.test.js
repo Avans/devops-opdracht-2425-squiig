@@ -1,4 +1,3 @@
-const { ExpectationFailed } = require("http-errors");
 import request from "supertest";
 import app from "../../app.js";
 import db from "../../services/database.js";
