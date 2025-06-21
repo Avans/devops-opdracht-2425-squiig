@@ -4,4 +4,4 @@ const checkRole = (roles) => (req, res, next) => {
   next();
 };
 
-module.exports = checkRole;
+export default checkRole;

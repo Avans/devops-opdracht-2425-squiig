@@ -1,9 +1,8 @@
-const passportJwt = require('passport-jwt');
+import passportJwt from 'passport-jwt';
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
-const passport = require('passport');
-const mongoose = require('mongoose')
-const User = require('../models/user');
+import passport from 'passport';
+import User from '../models/user.js';
 
 let opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -25,4 +24,4 @@ passport.use(new JwtStrategy(opts, async function (jwt_payload, done) {
   }
 }));
 
-module.exports = passport
+export default passport;

@@ -1,11 +1,12 @@
 {
   "name": "api-gateway",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --listTests && NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --verbose",
     "seed": "node ./seed.js"
   },
   "author": "",
@@ -24,6 +25,16 @@
   },
   "devDependencies": {
     "debug": "^4.3.5",
+    "jest": "^30.0.0",
+    "supertest": "^7.1.0",
     "supports-color": "^9.4.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {},
+    "testMatch": ["**/__tests__/**/*.test.js"],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

@@ -1,10 +1,10 @@
-const express = require('express');
-const multer = require('multer');
+import express from 'express';
 const router = express.Router();
+import multer from 'multer';
 const upload = multer();
-const User = require('../models/user');
-const checkRole = require('../auth/authorization');
-const mongoose = require('mongoose');
+import User from '../models/user.js';
+import checkRole from '../auth/authorization.js';
+import mongoose from 'mongoose';
 
 /**
  * @openapi
@@ -53,7 +53,7 @@ router.post('/', upload.single('image'), async function (req, res) {
     }
 
     const data = await response.text();
-    return { data, status: 200 }; 
+    return { data, status: 200 };
   })
   .then(response => {
     res.status(response.status).send(response.data);
@@ -105,7 +105,7 @@ router.delete('/:id', async function (req, res) {
     }
 
     const data = await response.text();
-    return { data, status: 200 }; 
+    return { data, status: 200 };
   })
   .then(response => {
     res.status(response.status).send(response.data);
@@ -175,7 +175,7 @@ router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
     }
 
     const data = await response.text();
-    return { data, status: 200 }; 
+    return { data, status: 200 };
   })
   .then(response => {
     res.status(response.status).send(response.data);
@@ -190,4 +190,4 @@ router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
   });
 });
 
-module.exports = router;
+export default router;

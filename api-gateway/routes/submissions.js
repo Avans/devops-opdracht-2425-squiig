@@ -1,15 +1,16 @@
-const express = require('express');
-const multer = require('multer');
+import express from "express";
 const router = express.Router();
+import multer from "multer";
 const upload = multer();
-const checkRole = require('../auth/authorization');
-const mongoose = require('mongoose');
-const User = require('../models/user');
+import checkRole from "../auth/authorization.js";
+import mongoose from "mongoose";
+import User from "../models/user.js";
+
 /**
  * @openapi
  * /:
  *   post:
- *     summary: Create a new submission.
+ *     summary: Create a new submission for a given target by a given user.
  *     produces: application/json
  *     responses:
  *       200:
@@ -23,29 +24,26 @@ const User = require('../models/user');
  *       500:
  *         description: An error occurred
  */
-router.post('/', upload.single('image'), async function (req, res) {
+router.post("/", upload.single("image"), async function (req, res) {
 
-  if (!req.body)
-    return res.status(400).send('Cannot POST empty body');
-
-  if (!req.file)
-    return res.status(400).send('No File found');
+  if (!req.body) return res.status(400).send("Cannot POST empty body");
+  if (!req.file) return res.status(400).send("No File found");
 
   let dataToSend = {
-    image: req.file.buffer.toString('base64'),
+    image: req.file.buffer.toString("base64"),
     targetId: req.body.targetId,
-    userId: req.user._id
+    userId: req.user._id,
   };
 
   const jsonData = JSON.stringify(dataToSend);
 
   const url = `http://submissionservice:${process.env.PORT}/`;
   await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: jsonData
+    body: jsonData,
   }).then(async (response) => {
     if (!response.ok) {
       const errorData = await response.text();
@@ -53,12 +51,12 @@ router.post('/', upload.single('image'), async function (req, res) {
     }
 
     const data = await response.text();
-    return { data, status: 200 }; 
+    return { data, status: 200 };
   })
-  .then(response => {
+  .then((response) => {
     res.status(response.status).send(response.data);
   })
-  .catch(err => {
+  .catch((err) => {
     if (err.status === 400) {
       res.status(400).send(err.data);
     } else {
@@ -94,30 +92,31 @@ router.post('/', upload.single('image'), async function (req, res) {
  *       500:
  *         description: An error occurred
  */
-router.delete('/target/:targetId/user', async function (req, res) {
+router.delete("/target/:targetId/user", async function (req, res) {
   const url = `http://submissionservice:${process.env.PORT}/targets/${req.params.targetId}/user/${req.user._id}`;
   await fetch(url, {
-    method: 'DELETE'
-  }).then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.text();
-      return Promise.reject({ status: response.status, data: errorData });
-    }
+    method: "DELETE",
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.text();
+        return Promise.reject({ status: response.status, data: errorData });
+      }
 
-    const data = await response.text();
-    return { data, status: 200 }; 
-  })
-  .then(response => {
-    res.status(response.status).send(response.data);
-  })
-  .catch(err => {
-    if (err.status === 404) {
-      res.status(404).send(err.data);
-    } else {
-      console.error(err);
-      res.status(500).send("Internal server error.");
-    }
-  });
+      const data = await response.text();
+      return { data, status: 200 };
+    })
+    .then((response) => {
+      res.status(response.status).send(response.data);
+    })
+    .catch((err) => {
+      if (err.status === 404) {
+        res.status(404).send(err.data);
+      } else {
+        console.error(err);
+        res.status(500).send("Internal server error.");
+      }
+    });
 });
 
 /**
@@ -146,31 +145,36 @@ router.delete('/target/:targetId/user', async function (req, res) {
  *       500:
  *         description: An error occurred
  */
-router.delete('/target/:targetId', checkRole(['admin']), async function (req, res) {
-  const url = `http://submissionservice:${process.env.PORT}/targets/${req.params.targetId}`;
-  await fetch(url, {
-    method: 'DELETE'
-  }).then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.text();
-      return Promise.reject({ status: response.status, data: errorData });
-    }
+router.delete(
+  "/target/:targetId",
+  checkRole(["admin"]),
+  async function (req, res) {
+    const url = `http://submissionservice:${process.env.PORT}/targets/${req.params.targetId}`;
+    await fetch(url, {
+      method: "DELETE",
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.text();
+          return Promise.reject({ status: response.status, data: errorData });
+        }
 
-    const data = await response.text();
-    return { data, status: 200 }; 
-  })
-  .then(response => {
-    res.status(response.status).send(response.data);
-  })
-  .catch(err => {
-    if (err.status === 404) {
-      res.status(404).send(err.data);
-    } else {
-      console.error(err);
-      res.status(500).send("Internal server error.");
-    }
-  });
-});
+        const data = await response.text();
+        return { data, status: 200 };
+      })
+      .then((response) => {
+        res.status(response.status).send(response.data);
+      })
+      .catch((err) => {
+        if (err.status === 404) {
+          res.status(404).send(err.data);
+        } else {
+          console.error(err);
+          res.status(500).send("Internal server error.");
+        }
+      });
+  }
+);
 
 /**
  * @openapi
@@ -198,7 +202,7 @@ router.delete('/target/:targetId', checkRole(['admin']), async function (req, re
  *       500:
  *         description: An error occurred
  */
-router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
+router.delete("/user/:user", checkRole(["admin"]), async function (req, res) {
   let userId;
   try {
     if (mongoose.Types.ObjectId.isValid(req.params.user)) {
@@ -209,7 +213,9 @@ router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
       });
     }
   } catch (err) {
-    res.status(404).send("User not found. Please supply a valid user id or email.");
+    res
+      .status(404)
+      .send("User not found. Please supply a valid user id or email.");
     return;
   }
 
@@ -220,27 +226,28 @@ router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
 
   const url = `http://submissionservice:${process.env.PORT}/user/${userId}`;
   await fetch(url, {
-    method: 'DELETE'
-  }).then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.text();
-      return Promise.reject({ status: response.status, data: errorData });
-    }
+    method: "DELETE",
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.text();
+        return Promise.reject({ status: response.status, data: errorData });
+      }
 
-    const data = await response.text();
-    return { data, status: 200 }; 
-  })
-  .then(response => {
-    res.status(response.status).send(response.data);
-  })
-  .catch(err => {
-    if (err.status === 404) {
-      res.status(404).send(err.data);
-    } else {
-      console.error(err);
-      res.status(500).send("Internal server error.");
-    }
-  });
+      const data = await response.text();
+      return { data, status: 200 };
+    })
+    .then((response) => {
+      res.status(response.status).send(response.data);
+    })
+    .catch((err) => {
+      if (err.status === 404) {
+        res.status(404).send(err.data);
+      } else {
+        console.error(err);
+        res.status(500).send("Internal server error.");
+      }
+    });
 });
 
-module.exports = router;
+export default router;
