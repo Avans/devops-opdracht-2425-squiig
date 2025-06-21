@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "jest --detectOpenHandles --listTests",
+    "test": "jest --listTests && jest --detectOpenHandles --verbose",
     "seed": "node ./seed.js"
   },
   "author": "",
