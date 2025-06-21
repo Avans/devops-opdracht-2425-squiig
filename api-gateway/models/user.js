@@ -1,23 +1,25 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    unique: true
-  },
-  passwordHash: {
-    type: String,
-    required: true
-  },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
-  }
-});
-
-const User = mongoose.model('User', userSchema);
+// Create a Model subclass for the User schema
+const User = mongoose.model(
+  "User",
+  new mongoose.Schema({
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      unique: true,
+    },
+    passwordHash: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+  })
+);
 
 export default User;
