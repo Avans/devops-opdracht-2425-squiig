@@ -27,6 +27,9 @@ const seedUsers = async () => {
   ];
 
   try {
+    const db = await import("./services/database.js");
+    await db.ensureConnected();
+
     // Remove any existing users
     // console.log('Deleting existing users...');
 
