@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import seeder from "../seed.js";
 const mongoUri = process.env.MONGO_URL || "mongodb://gatewaydb:27017/users";
 
-export async function connect() {
+async function connect() {
   try {
     console.log("Connecting to MongoDB with Mongoose...");
     await mongoose.connect(mongoUri);
@@ -12,7 +12,7 @@ export async function connect() {
   }
 }
 
-export async function disconnect() {
+async function disconnect() {
   try {
     console.log("Closing connection to MongoDB...");
     await mongoose.connection.close();
@@ -22,7 +22,13 @@ export async function disconnect() {
   }
 }
 
-export async function connectAndSeed() {
+async function connectAndSeed() {
   await connect();
   await seeder();
 }
+
+export default {
+  connect,
+  disconnect,
+  connectAndSeed,
+};
