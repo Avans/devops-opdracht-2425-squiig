@@ -5,8 +5,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www --experimental-vm-modules",
-    "test": "jest --listTests && jest --detectOpenHandles --verbose",
+    "start": "node ./bin/www",
+    "test": "jest --listTests && NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --verbose",
     "seed": "node ./seed.js"
   },
   "author": "",
