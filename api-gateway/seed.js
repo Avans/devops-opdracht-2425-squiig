@@ -70,6 +70,8 @@ const seedUsers = async () => {
 
 // Top-level auto-execution in case this file is run directly from the CLI
 if (invokedFromCli) {
+  console.log("Running seeder from CLI...");
+
   const dotenv = await import("dotenv");
   const dotEnvOutput = dotenv.config();
   if (dotEnvOutput.error)
