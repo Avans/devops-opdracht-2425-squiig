@@ -404,85 +404,82 @@ router.get('/submission/target/:id/user', async function (req, res) {
 });
 
 
+/// Broken OpenAPI documentation and can't be bothered to fix right now.
+// /**
+//  * @openapi
+//  * /submissions/target/{id}/submission:
+//  *   get:
+//  *     summary: Retrieve x top scores of given target.
+//  *     produces: application/json
+//  *     parameters:
+//  *       - in: path
+//  *         name: id
+//  *         required: true
+//  *         description: The ID of the target to retrieve the submissions for.
+//  *         schema:
+//  *           type: string
+//  *           example: "5f8d0d55b54764421b7156c2"
+//  *       - amount: top
+//  *         required: true
+//  *         description: Top amount of submissions to retrieve.
+//  *         schema:
+//  *           type: int
+//  *           example: "3"
+//  *     responses:
+//  *       200:
+//  *         description: A submission
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 createdByUser:
+//  *                   type: string
+//  *                   example: "5f8d0d55b54764421b7156c2"
+//  *                 image:
+//  *                   type: string
+//  *                 targetId:
+//  *                   type: string
+//  *                   example: "5f8d0d55b54764421b7156c2"
+//  *                 score:
+//  *                   type: number
+//  *                   example: 150
+//  *       404:
+//  *         description: resource not found
+//  *       500:
+//  *         description: An error occurred
+//  */
 
-/**
- * @openapi
- * /submissions/target/{id}/submission:
- *   get:
- *     summary: Retrieve x top scores of target.
- *     produces: application/json
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: The ID of the target to retrieve the submissions for.
- *         schema:
- *         type: string
- *         example: "5f8d0d55b54764421b7156c2"
- *         amount: top
- *         required: true
- *         description: top amount of submissione to retrieve.
- *         type: int
- *         example: "1"
- *     responses:
- *       200:
- *         description: A submission
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 createdByUser:
- *                   type: string
- *                   example: "5f8d0d55b54764421b7156c2"
- *                 image:
- *                   type: string
- *                 targetId:
- *                   type: string
- *                   example: "5f8d0d55b54764421b7156c2"
- *                 score:
- *                   type: number
- *                   example: 150
- *       404:
- *         description: resource not found
- *       500:
- *         description: An error occurred
- */
+// router.get('/target/:id/submission', async function (req, res) {
+//   const top = parseInt(req.query.top)
 
-router.get('/target/:id/submission', async function (req, res) {
-  const top = parseInt(req.query.top)
+//   if (isNaN(top) || top <= 0) {
+//     return res.status(400).send({ message: "Invalid top filter: must be a positive integer" });
+//   }
 
-  if (isNaN(top) || top <= 0) {
-    return res.status(400).send({ message: "Invalid top filter: must be a positive integer" });
-  }
+//   await fetch("http://readservice:" + process.env.PORT + "/submissions/target/" + req.params.id + "/top/" + top, {
+//     method: 'GET'
+//   })
+//     .then(async (response) => {
+//       if (!response.ok) {
+//         const errorData = await response.text();
+//         return Promise.reject({ status: response.status, data: errorData });
+//       }
 
-  await fetch("http://readservice:" + process.env.PORT + "/submissions/target/" + req.params.id + "/top/" + top, {
-    method: 'GET'
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        const errorData = await response.text();
-        return Promise.reject({ status: response.status, data: errorData });
-      }
-
-      const data = await response.text();
-      return { data, status: 200 };
-    })
-    .then(response => {
-      res.status(response.status).send(response.data);
-    })
-    .catch(err => {
-      if (err.status === 404) {
-        res.status(404).send(err.data);
-      } else {
-        console.error(err);
-        res.status(500).send("Internal server error.");
-      }
-    });
-});
-
-
-
-
+//       const data = await response.text();
+//       return { data, status: 200 };
+//     })
+//     .then(response => {
+//       res.status(response.status).send(response.data);
+//     })
+//     .catch(err => {
+//       if (err.status === 404) {
+//         res.status(404).send(err.data);
+//       } else {
+//         console.error(err);
+//         res.status(500).send("Internal server error.");
+//       }
+//     });
+// });
 
 export default router;
