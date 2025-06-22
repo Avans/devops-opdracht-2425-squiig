@@ -6,7 +6,7 @@ import User from "../../models/user.js";
 
 describe("Get Users", () => {
   beforeEach(async () => {
-    await db.connect();
+    await db.ensureConnected();
     await User.deleteMany({});
   });
 
