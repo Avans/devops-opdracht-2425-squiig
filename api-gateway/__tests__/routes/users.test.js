@@ -6,23 +6,27 @@ import User from "../../models/user.js";
 
 describe("Get Users", () => {
   beforeEach(async () => {
+    console.log("Connecting to database before test");
     await db.ensureConnected();
     await User.deleteMany({});
   });
 
   afterAll(async () => {
+    console.log("Closing connection after test");
     await db.disconnect();
   });
 
   it("should get all users in array", async () => {
+    console.log("Starting test");
     const expected = { email: "foo@bar.com", passwordHash: "foobar", role: "user" };
-    await User.insertOne(expected);
+    await User.insertOne(expected).catch((err) => console.error(err));
     delete expected._id;
 
     const res = await request(app).get("/users");
     expect(res.statusCode).toEqual(200);
     expect(res.body.length).toEqual(1);
     expect(res.body[0]).toEqual(expect.objectContaining(expected));
+    console.log("Test done");
   });
 });
 
