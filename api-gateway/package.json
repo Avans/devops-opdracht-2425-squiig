@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "jest --listTests && NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --verbose",
+    "test": "jest --listTests && cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --verbose",
     "seed": "node ./seed.js"
   },
   "author": "",
@@ -24,6 +24,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "debug": "^4.3.5",
     "jest": "^30.0.0",
     "supertest": "^7.1.0",
@@ -32,7 +33,9 @@
   "jest": {
     "testEnvironment": "node",
     "transform": {},
-    "testMatch": ["**/__tests__/**/*.test.js"],
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
