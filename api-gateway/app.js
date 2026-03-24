@@ -3,9 +3,6 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js";
 import createError from "http-errors";
 
-import db from "./services/database.js";
-await db.connectAndSeed();
-
 import passport from "./auth/passport.js";
 import checkRole from "./auth/authorization.js";
 

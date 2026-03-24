@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import seeder from "../seed.js";
-const mongoUri = process.env.MONGO_URL || "mongodb://gatewaydb:27017/users";
+const mongoUri = process.env.MONGO_URL || "mongodb://localhost:27017/users";
 
 async function ensureConnected() {
   if (mongoose.connection.readyState === 1) return; // Connected

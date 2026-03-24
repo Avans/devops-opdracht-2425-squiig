@@ -5,21 +5,25 @@ import db from "../../services/database.js";
 import User from "../../models/user.js";
 
 describe("Get Users", () => {
-  beforeEach(async () => {
-    console.log("Connecting to database before test");
+  beforeAll(async () => {
+    console.log("Connecting to database before tests");
     await db.ensureConnected();
+  });
+
+  beforeEach(async () => {
+    console.log("Clean the database before test.");
     await User.deleteMany({});
   });
 
   afterAll(async () => {
-    console.log("Closing connection after test");
+    console.log("Closing connection after test.");
     await db.disconnect();
   });
 
   it("should get all users in array", async () => {
     console.log("Starting test");
     const expected = { email: "foo@bar.com", passwordHash: "foobar", role: "user" };
-    await User.insertOne(expected).catch((err) => console.error(err));
+    await User.create(expected);
     delete expected._id;
 
     const res = await request(app).get("/users");

@@ -10,6 +10,12 @@ const debug = createDebug('api-gateway:server');
 import http from 'http';
 
 /**
+ * Connect to database and seed it.
+ */
+import db from '../services/database.js';
+await db.connectAndSeed();
+
+/**
  * Get port from environment and store in Express.
  */
 
