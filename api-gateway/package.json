@@ -24,6 +24,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^6.0.2",
     "cross-env": "^10.1.0",
     "debug": "^4.3.5",
     "jest": "^30.0.0",
