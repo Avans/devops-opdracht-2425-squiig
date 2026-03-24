@@ -32,6 +32,7 @@
     "supports-color": "^9.4.0"
   },
   "jest": {
+    "preset": "@shelf/jest-mongodb",
     "testEnvironment": "node",
     "transform": {},
     "testMatch": [
