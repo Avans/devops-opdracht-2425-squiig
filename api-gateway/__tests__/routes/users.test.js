@@ -26,7 +26,7 @@ describe("Get Users", () => {
     await User.create(expected);
     delete expected._id;
 
-    const res = await request(app).get("/users");
+    const res = await request(app).get("/read/users");
     expect(res.statusCode).toEqual(200);
     expect(res.body.length).toEqual(1);
     expect(res.body[0]).toEqual(expect.objectContaining(expected));
