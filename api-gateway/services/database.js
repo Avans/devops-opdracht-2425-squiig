@@ -3,7 +3,7 @@ import seeder from "../seed.js";
 const mongoUri = process.env.MONGO_URL || "mongodb://localhost:27017/users";
 
 async function ensureConnected() {
-  if (mongoose.connection.readyState === 1) return; // Connected
+  if (mongoose.connection.readyState === 1) return null; // Connected
   if (mongoose.connection.readyState === 2) { // Connecting
     // Wait until it's connected
     try {
@@ -11,7 +11,7 @@ async function ensureConnected() {
         mongoose.connection.once('connected', resolve);
         mongoose.connection.once('error', reject);
       });
-      return; // Connected
+      return null; // Connected
     } catch (err) {
       console.error('Failed to connect to database:', err);
     }
