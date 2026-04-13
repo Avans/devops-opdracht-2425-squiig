@@ -59,6 +59,9 @@ router.post("/", async (req, res) => {
         });
         return res.status(400).send(errors);
       }
+      if (error.code === 11000) {
+        return res.status(400).send("Saving submission failed.\nDuplicate submission.");
+      }
       console.error(error);
       res
         .status(error.code ?? 500)
