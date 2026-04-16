@@ -1,4 +1,3 @@
-import {jest} from '@jest/globals';
 import request from "supertest";
 import app from "../../app.js";
 import db from "../../services/database.js";
