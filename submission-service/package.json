@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "jest --listTests && jest --detectOpenHandles --verbose"
+    "test": "jest --listTests && jest --detectOpenHandles --verbose",
+    "lint": "npx eslint ."
   },
   "keywords": [],
   "author": "",
@@ -19,9 +20,13 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.2.0",
     "@shelf/jest-mongodb": "^6.0.2",
     "cross-env": "^10.1.0",
     "debug": "^4.3.5",
+    "eslint": "^10.2.0",
+    "globals": "^17.5.0",
     "jest": "^30.0.0",
     "supertest": "^7.1.0",
     "supports-color": "^9.4.0"

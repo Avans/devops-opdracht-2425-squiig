@@ -46,7 +46,7 @@ app.use(async function (req, res, next) {
 });
 
 // generic error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   const isDev = app.get("env") === "development";
   const msg = isDev
     ? err
