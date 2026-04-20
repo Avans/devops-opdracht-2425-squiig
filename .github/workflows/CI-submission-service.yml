@@ -30,8 +30,13 @@ jobs:
         run: npm run lint
 
       - name: Run Tests
+        if: github.event_name == 'pull_request'
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ./submission-service
           threshold: 50
+
+      - name: Run Tests (push)
+        if: github.event_name == 'push'
+        run: npx jest --detectOpenHandles

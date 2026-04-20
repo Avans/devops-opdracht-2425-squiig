@@ -30,9 +30,14 @@ jobs:
         run: npm run lint
 
       - name: Run Tests
+        if: github.event_name == 'pull_request'
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ./api-gateway
           threshold: 50
           test-script: npx cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters="json-summary" --coverageReporters="text" --coverageReporters="clover" --detectOpenHandles
+
+      - name: Run Tests (push)
+        if: github.event_name == 'push'
+        run: npx cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles
