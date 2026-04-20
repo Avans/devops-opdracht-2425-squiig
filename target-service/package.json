@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint ."
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
