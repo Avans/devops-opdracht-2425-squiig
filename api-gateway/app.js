@@ -3,9 +3,6 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig.js";
 import createError from "http-errors";
 
-import db from "./services/database.js";
-await db.connectAndSeed();
-
 import passport from "./auth/passport.js";
 import checkRole from "./auth/authorization.js";
 
@@ -49,7 +46,7 @@ app.use(async function (req, res, next) {
 });
 
 // generic error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   const isDev = app.get("env") === "development";
   const msg = isDev
     ? err

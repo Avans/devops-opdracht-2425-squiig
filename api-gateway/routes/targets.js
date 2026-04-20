@@ -155,7 +155,7 @@ router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
         userId = user._id;
       });
     }
-  } catch (err) {
+  } catch (_err) {
     res.status(404).send("User not found. Please supply a valid user id or email.");
     return;
   }

@@ -25,6 +25,8 @@ router.post("/", async (req, res) => {
           code: 404,
         };
 
+      //TODO: return 400 here if this user already has a submission for this target, instead of catching the internal 11000 duplicate key error code from MongoDB later on in the code
+
       const time = new Date();
       if (target.endtime < time) {
         throw { message: "Target is already finished", code: 400 };
@@ -58,6 +60,9 @@ router.post("/", async (req, res) => {
           errors[key] = error.errors[key].message;
         });
         return res.status(400).send(errors);
+      }
+      if (error.code === 11000) {
+        return res.status(400).send("Saving submission failed.\nDuplicate submission.");
       }
       console.error(error);
       res
