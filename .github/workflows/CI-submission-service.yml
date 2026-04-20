@@ -4,10 +4,10 @@ on:
   push:
     paths:
       - 'submission-service/**'
+      - '.github/workflows/CI-submission-service.yml'
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   test:
