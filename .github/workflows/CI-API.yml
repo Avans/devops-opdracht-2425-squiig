@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
       - name: Run Tests
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
@@ -33,6 +36,3 @@ jobs:
           working-directory: ./api-gateway
           threshold: 50
           test-script: npx cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters="json-summary" --coverageReporters="text" --coverageReporters="clover" --detectOpenHandles
-
-      - name: Lint
-        run: npm run lint
