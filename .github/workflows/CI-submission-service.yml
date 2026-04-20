@@ -11,16 +11,16 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: ./submission-service
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.2
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6.4.0
         with:
-          node-version: '22'
+          node-version: '22.22.2'
           cache: 'npm'
           cache-dependency-path: submission-service/package-lock.json
 
@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Tests
         if: github.event_name == 'pull_request'
-        uses: ArtiomTr/jest-coverage-report-action@v2
+        uses: ArtiomTr/jest-coverage-report-action@v2.3.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ./submission-service
