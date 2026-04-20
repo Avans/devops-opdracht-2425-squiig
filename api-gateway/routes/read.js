@@ -1,4 +1,5 @@
 import express from 'express';
+var unusedSloppyVar = "this should fail linting";
 const router = express.Router();
 import checkRole from '../auth/authorization.js';
 import User from '../models/user.js';
