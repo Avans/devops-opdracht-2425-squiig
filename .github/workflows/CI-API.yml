@@ -4,10 +4,10 @@ on:
   push:
     paths:
       - 'api-gateway/**'
+      - '.github/workflows/CI-API.yml'
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   test:
