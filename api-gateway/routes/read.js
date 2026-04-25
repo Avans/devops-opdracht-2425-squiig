@@ -36,7 +36,7 @@ import User from '../models/user.js';
  */
 router.get('/targets/user', async function (req, res) {
 
-  const url = `http://readservice:${process.env.PORT}/targets/get/${req.user._id}`;
+  const url = `${process.env.READ_SERVICE_URL}/targets/get/${req.user._id}`;
   await fetch(url, {
     method: 'GET'
   }).then(async (response) => {
@@ -98,7 +98,7 @@ router.get('/targets/user', async function (req, res) {
  *         description: An error occurred
  */
 router.get('/targets/active', async function (req, res) {
-  await fetch("http://readservice:" + process.env.PORT + "/targets/active", {
+  await fetch(process.env.READ_SERVICE_URL + "/targets/active", {
     method: 'GET'
   }).then(async (response) => {
     if (!response.ok) {
@@ -164,7 +164,8 @@ router.get('/targets/active', async function (req, res) {
  *         description: An error occurred
  */
 router.get('/submissions/target/:id', async function (req, res) {
-  await fetch("http://readservice:" + process.env.PORT + "/submissions/get/" + req.params.id + "/" + req.user._id, {
+  const url = `${process.env.READ_SERVICE_URL}/submissions/get/${req.params.id}/${req.user._id}`;
+  await fetch(url, {
     method: 'GET'
   }).then(async (response) => {
     if (!response.ok) {
@@ -261,7 +262,8 @@ router.get('/users', checkRole(['admin']), async function (req, res) {
  *         description: An error occurred
  */
 router.get('/targets/inactive', checkRole(['admin']), async function (req, res) {
-  await fetch("http://readservice:" + process.env.PORT + "/targets/inactive", {
+  const url = `${process.env.READ_SERVICE_URL}/targets/inactive`;
+  await fetch(url, {
     method: 'GET'
   })
     .then(async (response) => {
@@ -317,7 +319,8 @@ router.get('/targets/inactive', checkRole(['admin']), async function (req, res) 
  *         description: An error occurred
  */
 router.get('/targets', checkRole(['admin']), async function (req, res) {
-  await fetch("http://readservice:" + process.env.PORT + "/targets", {
+  const url = `${process.env.READ_SERVICE_URL}/targets`;
+  await fetch(url, {
     method: 'GET'
   })
     .then(async (response) => {
@@ -378,7 +381,8 @@ router.get('/targets', checkRole(['admin']), async function (req, res) {
  *         description: An error occurred
  */
 router.get('/submission/target/:id/user', async function (req, res) {
-  return fetch("http://readservice:" + process.env.PORT + "/submissions/target/" + req.params.id + "/user/" + req.user._id, {
+  const url = `${process.env.READ_SERVICE_URL}/submissions/target/${req.params.id}/user/${req.user._id}`;
+  return fetch(url, {
     method: 'GET'
   })
     .then(async (response) => {
