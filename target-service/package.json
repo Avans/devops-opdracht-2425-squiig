@@ -24,6 +24,7 @@
     "debug": "^4.3.5",
     "eslint": "^10.2.0",
     "globals": "^17.5.0",
+    "nodemon": "^3.1.14",
     "supports-color": "^9.4.0"
   }
 }
