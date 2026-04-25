@@ -2,6 +2,7 @@
   "name": "submissionservice",
   "version": "1.0.0",
   "scripts": {
+    "dev": "nodemon --legacy-watch ./bin/www",
     "start": "node ./bin/www",
     "test": "jest --listTests && jest --detectOpenHandles --verbose",
     "lint": "eslint ."

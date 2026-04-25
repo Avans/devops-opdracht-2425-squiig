@@ -5,6 +5,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "dev": "nodemon --legacy-watch ./bin/www",
     "start": "node ./bin/www",
     "test": "jest --listTests && cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --verbose",
     "seed": "node ./seed.js",

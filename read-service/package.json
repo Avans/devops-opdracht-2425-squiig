@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
+		"dev": "nodemon --legacy-watch ./bin/www",
 		"start": "node ./bin/www",
 		"lint": "eslint ."
 	},
