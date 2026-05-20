@@ -31,6 +31,9 @@ services:
     environment:
       MONGO_URL: mongodb://gatewaydb:27017/users
       PORT: 3000
+      READ_SERVICE_URL: http://readservice:3000
+      SUBMISSION_SERVICE_URL: http://submissionservice:3000
+      TARGET_SERVICE_URL: http://targetservice:3000
     depends_on:
       gatewaydb:
         condition: service_started

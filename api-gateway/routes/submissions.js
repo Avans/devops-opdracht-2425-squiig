@@ -37,7 +37,7 @@ router.post("/", upload.single("image"), async function (req, res) {
 
   const jsonData = JSON.stringify(dataToSend);
 
-  const url = `http://submissionservice:${process.env.PORT}/`;
+  const url = `${process.env.SUBMISSION_SERVICE_URL}/`;
   await fetch(url, {
     method: "POST",
     headers: {
@@ -93,7 +93,7 @@ router.post("/", upload.single("image"), async function (req, res) {
  *         description: An error occurred
  */
 router.delete("/target/:targetId/user", async function (req, res) {
-  const url = `http://submissionservice:${process.env.PORT}/targets/${req.params.targetId}/user/${req.user._id}`;
+  const url = `${process.env.SUBMISSION_SERVICE_URL}/targets/${req.params.targetId}/user/${req.user._id}`;
   await fetch(url, {
     method: "DELETE",
   })
@@ -149,7 +149,7 @@ router.delete(
   "/target/:targetId",
   checkRole(["admin"]),
   async function (req, res) {
-    const url = `http://submissionservice:${process.env.PORT}/targets/${req.params.targetId}`;
+    const url = `${process.env.SUBMISSION_SERVICE_URL}/targets/${req.params.targetId}`;
     await fetch(url, {
       method: "DELETE",
     })
@@ -224,7 +224,7 @@ router.delete("/user/:user", checkRole(["admin"]), async function (req, res) {
     return;
   }
 
-  const url = `http://submissionservice:${process.env.PORT}/user/${userId}`;
+  const url = `${process.env.SUBMISSION_SERVICE_URL}/user/${userId}`;
   await fetch(url, {
     method: "DELETE",
   })

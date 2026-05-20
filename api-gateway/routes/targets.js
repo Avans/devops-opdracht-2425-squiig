@@ -33,14 +33,15 @@ router.post('/', upload.single('image'), async function (req, res) {
   if (!req.file)
     return res.status(400).send('No File found');
 
-  let dataToSend = {
+  const dataToSend = {
     imageData: req.file.buffer.toString('base64'),
     additionalString: req.body,
     user: req.user._id
   };
 
   const jsonData = JSON.stringify(dataToSend);
-  await fetch("http://targetservice:" + process.env.PORT + "/upload", {
+  const url = `${process.env.TARGET_SERVICE_URL}/upload`;
+  await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -95,8 +96,8 @@ router.post('/', upload.single('image'), async function (req, res) {
  *         description: An error occurred
  */
 router.delete('/:id', async function (req, res) {
-
-  await fetch("http://targetservice:" + process.env.PORT + "/" + req.params.id + "/" + req.user._id, {
+  const url = `${process.env.TARGET_SERVICE_URL}/${req.params.id}/${req.user._id}`;
+  await fetch(url, {
     method: 'DELETE',
   }).then(async (response) => {
     if (!response.ok) {
@@ -165,7 +166,7 @@ router.delete('/user/:user', checkRole(['admin']), async function (req, res) {
     return;
   }
 
-  const url = `http://targetservice:${process.env.PORT}/user/${userId}`;
+  const url = `${process.env.TARGET_SERVICE_URL}/user/${userId}`;
   await fetch(url, {
     method: 'DELETE'
   }).then(async (response) => {
