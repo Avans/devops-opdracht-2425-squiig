@@ -3,7 +3,7 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
-    restart: on-failure:3
+    restart: always
     expose:
       - 5672
     ports:
@@ -23,6 +23,7 @@ services:
 
   apigateway:
     container_name: apigateway
+    restart: always
     build:
       context: api-gateway
       dockerfile: Dockerfile
@@ -41,7 +42,7 @@ services:
   gatewaydb:
     container_name: gatewaydb
     image: mongo:latest
-    restart: on-failure:3
+    restart: always
     expose:
       - 27017
     environment:
@@ -52,6 +53,7 @@ services:
 
   readservice:
     container_name: readservice
+    restart: always
     build:
       context: read-service
       dockerfile: Dockerfile
@@ -69,7 +71,7 @@ services:
   readservicedb:
     container_name: readservicedb
     image: mongo:latest
-    restart: on-failure:3
+    restart: always
     expose:
       - 27017
     environment:
@@ -80,6 +82,7 @@ services:
 
   targetservice:
     container_name: targetservice
+    restart: always
     build:
       context: target-service
       dockerfile: Dockerfile
@@ -97,7 +100,7 @@ services:
   targetdb:
     container_name: targetdb
     image: mongo:latest
-    restart: on-failure:3
+    restart: always
     expose:
       - 27017
     environment:
@@ -108,6 +111,7 @@ services:
 
   submissionservice:
     container_name: submissionservice
+    restart: always
     build:
       context: submission-service
       dockerfile: Dockerfile
@@ -129,7 +133,7 @@ services:
   submissiondb:
     container_name: submissiondb
     image: mongo:latest
-    restart: on-failure:3
+    restart: always
     expose:
       - 27017
     environment:
