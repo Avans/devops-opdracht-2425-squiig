@@ -29,7 +29,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MONGO_URL: mongodb://gatewaydb:27017/users
+      MONGO_URL: mongodb://mongoadmin:secret@gatewaydb:27017/users?authSource=admin
       PORT: 3000
       READ_SERVICE_URL: http://readservice:3000
       SUBMISSION_SERVICE_URL: http://submissionservice:3000
@@ -44,6 +44,9 @@ services:
     restart: on-failure:3
     expose:
       - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
     volumes:
       - gatewaydb:/data/db
 
@@ -54,7 +57,7 @@ services:
       dockerfile: Dockerfile
     environment:
       PORT: 3000
-      MONGO_URL: mongodb://readservicedb:27017/read
+      MONGO_URL: mongodb://mongoadmin:secret@readservicedb:27017/read?authSource=admin
       RABBITMQ_URL: amqp://user:secret@rabbitmq
       RABBITMQ_PORT: 5672
     depends_on:
@@ -69,6 +72,9 @@ services:
     restart: on-failure:3
     expose:
       - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
     volumes:
       - readservicedb:/data/db
 
@@ -78,7 +84,7 @@ services:
       context: target-service
       dockerfile: Dockerfile
     environment:
-      MONGO_URL: mongodb://targetdb:27017/targets
+      MONGO_URL: mongodb://mongoadmin:secret@targetdb:27017/targets?authSource=admin
       RABBITMQ_URL: amqp://user:secret@rabbitmq
       RABBITMQ_PORT: 5672
       PORT: 3000
@@ -94,6 +100,9 @@ services:
     restart: on-failure:3
     expose:
       - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
     volumes:
       - targetdb:/data/db
 
@@ -106,7 +115,7 @@ services:
       RABBITMQ_URL: amqp://user:secret@rabbitmq
       RABBITMQ_PORT: 5672
       PORT: 3000
-      MONGO_URL: mongodb://submissiondb:27017/submissions
+      MONGO_URL: mongodb://mongoadmin:secret@submissiondb:27017/submissions?authSource=admin
       IMAGGA_KEY: acc_58905f59a7ab950
       IMAGGA_SECRET: f87b5df804c244181167631ac6a3ec5a
       IMAGGA_ENDPOINT: https://api.imagga.com
@@ -123,6 +132,9 @@ services:
     restart: on-failure:3
     expose:
       - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
     volumes:
       - submissiondb:/data/db
 
