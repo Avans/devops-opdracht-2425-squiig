@@ -51,6 +51,21 @@ services:
     volumes:
       - gatewaydb:/data/db
 
+  gatewaydb-exporter:
+    container_name: gatewaydb-exporter
+    image: percona/mongodb_exporter:0.51.0
+    restart: always
+    expose:
+      - 9216
+    command:
+      - "--collect-all"
+      - "--compatible-mode"
+    environment:
+      MONGODB_URI: mongodb://mongoadmin:secret@gatewaydb:27017/users?authSource=admin
+    depends_on:
+      gatewaydb:
+        condition: service_started
+
   readservice:
     container_name: readservice
     restart: always
