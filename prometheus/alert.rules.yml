@@ -1,0 +1,27 @@
+groups:
+  - name: apigateway
+    rules:
+      - alert: APIGatewayDown
+        expr: up{job="apigateway"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "API Gateway is down"
+          description: "API Gateway is down"
+      - alert: APIGatewayTooManyRequests
+        expr: sum(rate(apigateway_http_requests_in_progress[1m])) by (job) > 5
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "API Gateway is receiving too many requests"
+          description: "API Gateway is receiving too many requests"
+      - alert: APIGatewaySlowResponse
+        expr: http_request_duration_seconds_sum{job="apigateway"} > 2
+        for: 20s
+        labels:
+          severity: warning
+        annotations:
+          summary: "API Gateway is responding slowly"
+          description: "API Gateway is responding slowly"

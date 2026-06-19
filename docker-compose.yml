@@ -1,5 +1,18 @@
 services:
 
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
@@ -163,3 +176,4 @@ volumes:
   readservicedb:
   gatewaydb:
   rabbitmq:
+  prometheus_data:
