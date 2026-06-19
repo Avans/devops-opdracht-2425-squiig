@@ -13,6 +13,13 @@ services:
       - '--web.enable-lifecycle'
       - '--config.file=/etc/prometheus/prometheus.yml'
 
+  grafana:
+    container_name: grafana
+    build: ./grafana
+    restart: always
+    ports:
+      - "3001:3000"
+
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
