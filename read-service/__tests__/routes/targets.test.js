@@ -1,5 +1,4 @@
-// app.js calls subscriber.subscribe() at import time, which would try to reach
-// RabbitMQ. Mock it so the test only exercises HTTP + MongoDB.
+
 jest.mock('../../mqtt/subscriber', () => ({ subscribe: jest.fn() }));
 
 const request = require('supertest');

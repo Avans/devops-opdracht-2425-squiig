@@ -1,6 +1,4 @@
-// routes.js calls publisher.publishDirectExchange() when a target changes,
-// which would try to reach RabbitMQ. Mock it so the test only exercises
-// HTTP + MongoDB.
+
 jest.mock('../../mqtt/publisher', () => ({ publishDirectExchange: jest.fn() }));
 
 const request = require('supertest');
