@@ -22,12 +22,26 @@ const metricsMiddleware = promBundle({
   },
 });
 
+import client from "prom-client";
+const gauge = new client.Gauge({
+  name: "apigateway_http_requests_in_progress",
+  help: "Number of http requests in progress to the API Gateway",
+});
+
 const app = express();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(metricsMiddleware);
+
+app.use((req, res, next) => {
+  gauge.inc(1);
+  res.on("close", () => {
+    gauge.dec(1);
+  });
+  next();
+});
 
 /** Routes */
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

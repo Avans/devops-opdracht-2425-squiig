@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+rule_files:
+  - "alert.rules.yml"
+
+scrape_configs:
+  - job_name: "apigateway"
+    static_configs:
+      - targets: ["apigateway:3000"]
+  - job_name: "gatewaydb"
+    static_configs:
+      - targets: ["gatewaydb-exporter:9216"]
